@@ -1,0 +1,55 @@
+{
+  "common": {
+    "add": "Add",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "createdAt": "Created At",
+    "createdBy": "Created By",
+    "updatedAt": "Updated At",
+    "updatedBy": "Updated By",
+    "save": "Save",
+    "all": "All",
+    "updates": "updates",
+    "prop": "prop",
+    "before": "before",
+    "after": "after"
+  },
+  "users": {
+    "add": "Add User",
+    "title": "Users",
+    "model": {
+      "phone": "Phone",
+      "name": "Name" ,
+      "role": "Role",
+      "isActive": "Is Active"
+    },
+    "enums": {
+      "activeState": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "roles": {
+        "user": "User",
+        "admin": "Admin",
+        "editor": "Editor"
+      }
+    },
+    "added": "User added successfully",
+    "update": "Update User",
+    "updated": "User updated successfully",
+    "deleted": "User deleted successfully"
+  },
+  "auth": {
+    "loginErrorTitle": "Login Error",
+    "userNotFound": "User not found",
+    "okButton": "OK",
+    "signupTitle": "Signup",
+    "namePlaceholder": "Name",
+    "phonePlaceholder": "Phone",
+    "cancelButton": "Cancel",
+    "signupButton": "Signup",
+    "added": "User added successfully",
+    "loginSuccess": "Login successful"
+  }
+}

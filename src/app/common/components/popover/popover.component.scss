@@ -1,0 +1,26 @@
+scss
+ion-popover {
+  --width: 200px;
+  --background: var(--ion-color-light);
+  --box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+  ion-content {
+    --background: transparent;
+  }
+
+  ion-list {
+    background: transparent;
+
+    ion-item {
+      --background: transparent;
+      --padding-start: 10px;
+      --padding-end: 10px;
+      --inner-padding-end: 0px;
+
+      ion-label {
+        font-size: 16px;
+        color: var(--ion-color-dark);
+      }
+    }
+  }
+}

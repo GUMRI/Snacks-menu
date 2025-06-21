@@ -1,0 +1,42 @@
+<ion-content>
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="updateSearchValue($event)" placeholder="Search"></ion-searchbar>
+    <ion-buttons slot="end">
+
+      <ion-button (click)="toggoleDirection()">
+        <ion-icon
+          [name]="queryOptions().ordering?.direction === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
+      </ion-button>
+
+    </ion-buttons>
+  </ion-toolbar>
+ 
+    <ion-accordion-group>
+      @for (ingredient of ingredientsList(); track ingredient.id) {
+      <ion-accordion>
+        <ion-item slot="header">
+          <ion-label>
+            <h2>{{ ingredient.name }}</h2>
+            <p>{{ ingredient.quantityLevel }}</p>
+          </ion-label>
+            <ion-button (click)="update(ingredient);  $event.stopPropagation()">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+            <ion-button color="danger" (click)="common.confirmDelete(title, ingredient);  $event.stopPropagation()">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+        </ion-item>
+        <div slot="content">
+         
+        </div>
+      </ion-accordion>
+    } @empty {
+      <ion-item>
+        <ion-label>No ingredients found</ion-label>
+      </ion-item>
+    }
+    </ion-accordion-group>
+ 
+
+
+</ion-content>

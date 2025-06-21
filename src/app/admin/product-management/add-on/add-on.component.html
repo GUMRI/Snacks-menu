@@ -1,0 +1,43 @@
+<ion-content>
+
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="updateSearchValue($event)" placeholder="Search"></ion-searchbar>
+    <ion-buttons slot="end">
+
+      <ion-button (click)="toggoleDirection()">
+        <ion-icon
+          [name]="queryOptions().ordering?.direction === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
+      </ion-button>
+
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-list>
+    <ion-accordion-group>
+      @for (addOn of addOnsList(); track addOn) {
+      <ion-accordion value="{{ addOn.id }}">
+        <ion-item slot="header">
+          <ion-label>
+            <h2>{{ addOn.name }}</h2>
+            <p>{{ 'price' | transloco }}: {{ addOn.price }}</p>
+          </ion-label>
+
+          <ion-button slot="end" color="primary" (click)="update(addOn);  $event.stopPropagation()">
+            <ion-icon slot="icon-only" name="create"></ion-icon>
+          </ion-button>
+          <ion-button slot="end" color="danger" (click)="common.confirmDelete(title, addOn);  $event.stopPropagation()">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+
+        </ion-item>
+        <div class="ion-padding" slot="content">
+
+        </div>
+      </ion-accordion>
+      }
+    </ion-accordion-group>
+  </ion-list>
+
+
+
+</ion-content>

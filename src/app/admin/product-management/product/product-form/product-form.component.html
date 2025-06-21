@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{'product.modal.title' | transloco}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="modalCtrl.dismiss(null, 'cancel')">
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <!-- style="display: flex; justify-content: center;  align-items: center; flex-direction: column;" -->
+  <div class="ion-padding">
+    <app-img [imgId]="'1747402922932'"></app-img>
+
+  </div>
+  <form [formGroup]="productForm">
+    <ion-item hidden="true">
+      <ion-label position="floating">{{'common.imageUrl' | transloco}}</ion-label>
+      <ion-input formControlName="imageUrl" type="url"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">{{'common.name' | transloco}}</ion-label>
+      <ion-input formControlName="name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">{{'common.price' | transloco}}</ion-label>
+      <ion-input formControlName="price" type="number"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">{{'product.model.category' | transloco}}</ion-label>
+      <ion-select formControlName="category" interface="popover">
+        @for (category of productCategories; track category) {
+        <ion-select-option [value]="category">{{ category | transloco }}</ion-select-option>
+        }
+      </ion-select>
+    </ion-item>
+
+
+
+
+
+
+
+    <ion-item>
+      <ion-label>{{'common.isAvailable' | transloco}}</ion-label>
+      <ion-checkbox formControlName="isAvailable" slot="end"></ion-checkbox>
+    </ion-item>
+
+    @if (true) {
+    <ion-item>
+      <ion-label>{{'product.selectedAddOns' | transloco}}</ion-label>
+    </ion-item>
+    <ion-item>
+      @for (addOn of $any(productForm.get('addOns')?.value); track addOn.id) {
+      <ion-chip outline="true">
+        <ion-label>{{ addOn.name }}</ion-label>
+        <ion-icon name="close-circle" (click)="onRemoveAddOn(addOn)"></ion-icon>
+      </ion-chip>
+      }
+    </ion-item>
+
+    <mat-form-field appearance="fill" style="width: 100%; margin-inline: 10px;">
+      <mat-label>{{'product.addOnsPlaceholder' | transloco}}</mat-label>
+      <input type="text" placeholder="{{'product.addOnsPlaceholder' | transloco}}" aria-label="Add Ons" matInput
+        formControlName="addOnSearch" [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+        (optionSelected)="onAddAddOn($event.option.value)">
+        @for (addOn of filteredAddOns(); track addOn.id) {
+        <mat-option [value]="addOn.name">{{ addOn.name }}</mat-option>
+        } @empty {
+        <mat-option disabled>{{'common.noData' | transloco}}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+
+
+
+    }
+  </form>
+</ion-content>

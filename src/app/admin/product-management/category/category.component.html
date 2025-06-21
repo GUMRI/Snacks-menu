@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Categories</ion-title>
+    <ion-buttons slot="end">
+      <!-- <ion-button (click)="categoryService.addCategory()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-toolbar>
+    <!-- <ion-searchbar (ionInput)="categoryService.search($event)" placeholder="Search"></ion-searchbar> -->
+  </ion-toolbar>
+  <ion-list  >
+    <ion-radio-group >
+    <!-- @for (category of categoryService.list.value(); track category.id) {
+    <ion-item-sliding>
+      <ion-item>
+        <ion-radio  [value]="category.id" >     
+          {{category.name}}
+        </ion-radio>
+        
+       
+      </ion-item>
+      
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="categoryService.updateCategory(category)">Edit</ion-item-option>
+        <ion-item-option color="danger" (click)="categoryService.confirmDeleteCategory(category)">Delete</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    } -->
+    </ion-radio-group>
+  </ion-list>
+</ion-content>

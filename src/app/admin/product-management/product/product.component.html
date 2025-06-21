@@ -1,0 +1,40 @@
+<ion-content>
+
+
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="updateSearchValue($event)" placeholder="Search"></ion-searchbar>
+    <ion-buttons slot="end">
+      
+      <ion-button (click)="toggoleDirection()">
+        <ion-icon
+          [name]="queryOptions().ordering?.direction === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
+      </ion-button>
+
+    </ion-buttons>
+  </ion-toolbar>
+
+
+  @if (productsList().length > 0) {
+  <ion-accordion-group>
+    @for (item of productsList(); track item.id) {
+    <ion-accordion>
+      <ion-item slot="header">
+        <ion-label>
+          <h2>{{item.name}}</h2>
+          <p>{{item.createdAt | date}}</p>
+        </ion-label>
+        <ion-button color="warning" (click)="update(item);  $event.stopPropagation()">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button color="danger" (click)="common.confirmDelete(title, item);  $event.stopPropagation()">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-accordion>
+    }
+  </ion-accordion-group>
+  } @else {
+  <div class="ion-text-center">{{'common.noData' | transloco}}</div>
+  }
+
+</ion-content>

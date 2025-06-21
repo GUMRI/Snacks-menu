@@ -1,0 +1,52 @@
+<ion-icon  name="ellipsis-vertical" slot="icon-only"></ion-icon>
+
+<ion-popover trigger="setting-pop">
+  <ng-template>
+  <ion-list>
+   
+    @if(!authService.currentId()){
+      <ion-item (click)="login()">
+        <ion-icon  name="log-in-outline"></ion-icon>
+        <ion-label slot="end">{{'auth.login' | transloco}}</ion-label>
+      </ion-item>
+    }
+    @if(!authService.currentId()){
+      <ion-item (click)="register()">
+        <ion-icon  name="person-add-outline"></ion-icon>
+        <ion-label slot="end">{{'auth.register' | transloco}}</ion-label>
+      </ion-item>
+    }
+
+      @if(authService.currentId()){
+        <ion-item >
+            <ion-avatar>
+               <img alt="Silhouette of a person's head" 
+               src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+              </ion-avatar>
+            <ion-label class="ion-margin-start">
+              {{ $any(authService.currentUser.value())?.name }}
+               <p>{{ $any(authService.currentUser.value())?.phone}}</p>
+            </ion-label >
+            <ion-button color="medium" slot="end" fill="clear" (click)="logOut()">
+              {{'auth.logout' | transloco}}
+              <ion-icon slot="end"  name="log-out-outline"></ion-icon>       </ion-button>
+        </ion-item>
+      }
+    <ion-item>
+      
+      <ion-icon name="language-outline"></ion-icon>
+      
+      <ion-select
+      slot=end
+        (ionChange)="changeLang($event.detail.value)"
+        interface="popover"
+        [value]="translocoService.getActiveLang()"
+      >
+        <ion-select-option value="en">English</ion-select-option>
+        <ion-select-option value="ar">العربية</ion-select-option>
+        <ion-select-option value="fr">Français</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  </ng-template>
+</ion-popover>

@@ -1,0 +1,175 @@
+<ion-header>
+      <ion-toolbar>
+            <ion-buttons slot="start">
+                  <ion-back-button defaultHref="/"></ion-back-button>
+            </ion-buttons>
+            <ion-title>{{ 'users.title' | transloco }}</ion-title>
+            <ion-button id="setting-pop" slot="end" fill="clear" >
+                  <app-popover></app-popover>
+            </ion-button>
+
+      </ion-toolbar>
+</ion-header>
+<ion-content>
+      <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+            <ion-fab-button (click)="add()">
+                  <ion-icon name="add"></ion-icon>
+            </ion-fab-button>
+      </ion-fab>
+      <ion-toolbar>
+            <ion-searchbar (ionInput)="updateSearchValue($event)" placeholder="Search"></ion-searchbar>
+            <ion-buttons slot="end">
+                  <ion-select toggleIcon="undefined" value="name" (ionChange)="setOrderField($event)">
+                        <ion-icon slot="label" name="list-outline"></ion-icon>
+                        <ion-select-option value="name">{{ 'users.model.name' | transloco }}</ion-select-option>
+                        <ion-select-option value="phone">{{ 'users.model.phone' | transloco }}</ion-select-option>
+                        <ion-select-option value="createdAt">{{ 'common.createdAt' | transloco }}
+                        </ion-select-option>
+                  </ion-select>
+                  <ion-button (click)="toggoleDirection()">
+                        <ion-icon
+                              [name]="queryOptions().ordering?.direction === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
+                  </ion-button>
+
+            </ion-buttons>
+      </ion-toolbar>
+
+      <ion-toolbar>
+            <ion-segment value="all" (ionChange)="updateFilterValue($event, 'isActive')">
+                  <ion-segment-button value="all">
+                        <ion-label>{{ 'common.all' | transloco }}</ion-label>
+                  </ion-segment-button>
+                  <ion-segment-button value="true">
+                        <ion-label>{{'users.enums.activeState.active' | transloco}}</ion-label>
+                  </ion-segment-button>
+                  <ion-segment-button value="false">
+                        <ion-label>{{'users.enums.activeState.inactive' | transloco}}</ion-label>
+                  </ion-segment-button>
+
+            </ion-segment>
+
+      </ion-toolbar>
+      <ion-list>
+            <ion-accordion-group>
+                  @for (user of list(); track user.id) {
+                  <ion-accordion [value]="user.name">
+                        <ion-item slot="header">
+                              <ion-avatar slot="start">
+                                    <img alt="Silhouette of a person's head"
+                                          src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                              </ion-avatar>
+                              <ion-label>
+                                    {{ user.name }}
+                                    <p> {{'users.model.phone' | transloco }}: <b>{{user.phone }}</b>
+                                    </p>
+                              </ion-label>
+                              <ion-buttons side="end">
+                                    <ion-button color="primary" (click)="update(user); $event.stopPropagation()">
+                                          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+                                    </ion-button>
+                                    <ion-button color="danger"
+                                          (click)="remove(user); $event.stopPropagation()">
+                                          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                                    </ion-button>
+                              </ion-buttons> <ion-icon class="ion-margin-end"
+                                    [color]="user.isConnect ? 'success' : 'dark'" name="radio-outline"></ion-icon>
+                              <ion-icon [color]="user.isActive ? 'success' : 'dark'"
+                                    name="radio-button-on-outline"></ion-icon>
+
+                        </ion-item>
+                        <div class="ion-padding" slot="content">
+                              <ion-list>
+                                    <ion-item>
+                                          <ion-label> {{ 'users.model.role' | transloco }} </ion-label>
+                                          <ion-badge slot="end" color="dark">{{ 'users.enums.roles.user' | transloco
+                                                }}</ion-badge>
+                                    </ion-item>
+
+                                    <ion-item>
+                                          <ion-label> {{ 'common.createdAt' | transloco}} </ion-label>
+                                          <ion-badge color="ligth">{{ user.createdAt | date }}</ion-badge>
+                                    </ion-item>
+                                    <ion-item>
+                                          <ion-label> {{ 'common.createdBy' | transloco}} </ion-label>
+                                          <ion-chip slot="end">
+                                                <ion-avatar>
+                                                      <img alt="Silhouette of a person's head"
+                                                            src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                                                </ion-avatar>
+                                                <ion-label> {{ $any(user.createdBy)?.name }}
+                                                </ion-label>
+                                          </ion-chip>
+                                    </ion-item>
+                              </ion-list>
+                              <ion-accordion-group class="ion-padding">
+                                    <ion-accordion style="border: 1px solid #ccc;">
+                                          <ion-item slot="header">
+                                                <h4>{{ 'common.updates' | transloco }}</h4>
+                                          </ion-item>
+                                          <div slot="content">
+                                                <ion-accordion-group>
+                                                      <ion-item>
+                                                            <ion-label  >  {{ 'common.updatedAt' | transloco}}</ion-label>
+                                                            <ion-label slot="end">  {{ 'common.updatedBy' | transloco}}</ion-label>
+                                                      </ion-item>
+                                                      @for (update of user.updates; track $index) {
+                                                      <ion-accordion style="border: 1px solid #ccc;">
+                                                            <ion-item slot="header">
+                                                                 
+                                                                  <ion-badge color="ligth" >
+                                                                        {{ update.at | translocoDate }}
+                                                                  </ion-badge>
+                                                                  <ion-chip slot="end">
+                                                                        <ion-avatar>
+                                                                              <img alt="Silhouette of a person's head"
+                                                                                    src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                                                                        </ion-avatar>
+                                                                        <ion-label> {{ $any(update.by)?.name }}
+                                                                        </ion-label>
+                                                                  </ion-chip>
+                                                            </ion-item>
+                                                            <div slot="content">
+                                                                  <ion-list>
+                                                                        <ion-item>
+                                                                              <ion-label> {{'common.prop' | transloco }}
+                                                                              </ion-label>
+                                                                              <ion-label> {{ 'common.before'
+                                                                                    | transloco }} </ion-label>
+                                                                              <ion-label slot="end"> {{ 'common.after' |
+                                                                                    transloco }} </ion-label>
+                                                                              <ion-button slot=end>
+                                                                                    <ion-icon slot="icon-only"
+                                                                                          name="refresh-outline"></ion-icon>
+                                                                              </ion-button>
+                                                                        </ion-item>
+                                                                        @for (entry of toEntries(update.updating); track
+                                                                        $index) {
+                                                                        <ion-item>
+                                                                              <ion-label> {{ "users.model." + entry[0] |
+                                                                                    transloco }} </ion-label>
+                                                                              <ion-label> {{ entry[1].before
+                                                                                    }} </ion-label>
+                                                                              <ion-label slot="end"> {{ entry[1].after
+                                                                                    }} </ion-label>
+                                                                              <ion-button slot=end
+                                                                                    (click)="restoreData(user, toRecord(entry))">
+                                                                                    <ion-icon slot="icon-only"
+                                                                                          name="refresh-outline"></ion-icon>
+                                                                              </ion-button>
+                                                                        </ion-item>
+                                                                        }
+                                                                  </ion-list>
+                                                            </div>
+                                                      </ion-accordion>
+                                                      }
+                                                </ion-accordion-group>
+                                          </div>
+                                    </ion-accordion>
+                              </ion-accordion-group>
+                        </div>
+                  </ion-accordion>
+                  }
+            </ion-accordion-group>
+      </ion-list>
+
+</ion-content>
