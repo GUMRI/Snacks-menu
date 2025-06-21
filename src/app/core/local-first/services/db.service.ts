@@ -26,7 +26,7 @@ import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
 import { BaseDoc, TCollection } from '../types/doc.models';
 import { wrappedValidateZSchemaStorage } from 'rxdb/plugins/validate-z-schema';
-import { COLLECTIONS_NAMES, collectionSettings, TCollections } from '../schema/collectionSettings';
+import {  COLLECTIONS_NAMES, collectionSettings, TCollections } from '../schema/collectionSettings';
 
 addRxPlugin(RxDBLeaderElectionPlugin);
 addRxPlugin(RxDBUpdatePlugin);

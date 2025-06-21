@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection, isDevMode, APP_INITIALIZER, APP_BOOTSTRAP_LISTENER, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, isDevMode, APP_BOOTSTRAP_LISTENER, provideExperimentalZonelessChangeDetection, provideAppInitializer } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -10,6 +10,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
+import { initDatabase } from './core/local-first/services/db.service';
 
 
 export const appConfig: ApplicationConfig = {
@@ -18,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideIonicAngular({}),
     provideHttpClient(),
+    provideAppInitializer(initDatabase),
     provideTranslocoLocale({
       langToLocaleMapping: {
         en: 'en-US',
