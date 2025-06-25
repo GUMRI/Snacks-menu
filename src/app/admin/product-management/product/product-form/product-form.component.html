@@ -11,7 +11,7 @@
 <ion-content>
   <!-- style="display: flex; justify-content: center;  align-items: center; flex-direction: column;" -->
   <div class="ion-padding">
-    <app-img [imgId]="'1747402922932'"></app-img>
+    <app-img [uploading]="true"></app-img>
 
   </div>
   <form [formGroup]="productForm">
@@ -32,7 +32,7 @@
     <ion-item>
       <ion-label position="floating">{{'product.model.category' | transloco}}</ion-label>
       <ion-select formControlName="category" interface="popover">
-        @for (category of productCategories; track category) {
+        @for (category of productCategoryList(); track category) {
         <ion-select-option [value]="category">{{ category | transloco }}</ion-select-option>
         }
       </ion-select>
@@ -68,7 +68,7 @@
         formControlName="addOnSearch" [matAutocomplete]="auto">
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
         (optionSelected)="onAddAddOn($event.option.value)">
-        @for (addOn of filteredAddOns(); track addOn.id) {
+        @for (addOn of addOnsList.value(); track addOn.id) {
         <mat-option [value]="addOn.name">{{ addOn.name }}</mat-option>
         } @empty {
         <mat-option disabled>{{'common.noData' | transloco}}</mat-option>

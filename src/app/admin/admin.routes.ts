@@ -7,17 +7,17 @@ export const adminRoutes: Routes = [
     redirectTo: 'product-management',
     pathMatch: 'full'
   },
-  // {
-  //   path: 'users',
-  //   loadComponent: () => import('./users/users.component').then(m => m.UsersComponent),
-  //   title: 'users',
-  //   data: {}
-  // },
   {
-  path: 'product-management',  
-  loadComponent: () => import('./product-management/product-management.component').then(m => m.ProductManagementComponent)
-   
-   },
+    path: 'users',
+    loadComponent: () => import('./users/users.component').then(m => m.UsersComponent),
+    title: 'users',
+    data: {}
+  },
+  {
+    path: 'product-management',
+    loadComponent: () => import('./product-management/product-management.component').then(m => m.ProductManagementComponent)
+
+  },
 
 
 ];

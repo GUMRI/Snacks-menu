@@ -1,4 +1,5 @@
-import { Component, computed, inject, Injector, linkedSignal, OnInit, resource, Signal } from '@angular/core';
+import { ProductService } from './../../../core/services/product.service';
+import { Component, computed, inject, Injector, linkedSignal, OnInit, resource, signal, Signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslocoService } from '@jsverse/transloco';
 import { Observable } from 'rxjs';
@@ -13,8 +14,12 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { DatePipe } from '@angular/common';
 
 import { CommonService } from '../../../common/services/common.service';
-import { Item, QueryOptions } from '../../../common/models/common.models';
 import { ImgComponent } from '../../../common/components/img.component';
+import { COLLECTIONS_NAMES } from '../../../core/local-first/schema/collectionSettings';
+import { IProduct, ProductWithBaseDoc } from '../../../core/local-first/schema/models/product/product.schema';
+import { UpdateDocType } from '../../../core/local-first/types/doc.models';
+import { MangoQuery } from 'rxdb';
+import { DatabaseService } from '../../../core/local-first/services/db.service';
 
 @Component({
   selector: 'app-product',
@@ -44,33 +49,14 @@ import { ImgComponent } from '../../../common/components/img.component';
 })
 export class ProductComponent implements OnInit {
   common = inject(CommonService);
-  title: string = 'products';
-  initQueryOptins: QueryOptions<any> = {
-    search: { fields: ['name'], value: '' },
-    ordering: { field: 'createdAt', direction: 'asc' },
-    filters: {
-      createdAt: 'all',
-      lastUpdatedAt: 'all',
-      createdBy: 'all',
-      lastUpdatedBy: 'all',
-      name: 'all',
-    }
-  };
+  title: COLLECTIONS_NAMES = 'products';
+  productService = inject(ProductService);
+
   private readonly injector = inject(Injector);
   public trans = inject(TranslocoService);
 
-  public queryOptions = linkedSignal<QueryOptions<any>>(() => this.initQueryOptins);
+  
 
-  public productsList$ = rxResource({
-    loader: () => this.common.getListData<any>(this.title),
-    defaultValue: [],
-    injector: this.injector
-  });
-
-  public productsList: Signal<any[]> = computed(() => {
-    const items = this.productsList$.value();
-    return this.common.applyQueryOptions<any>(items, this.queryOptions());
-  });
 
   constructor() { }
   ngOnInit() { }
@@ -78,28 +64,27 @@ export class ProductComponent implements OnInit {
   add() {
     this.common.createOrUpdateAlertForm<any>(this.title, { name: 'text' }, { isActive: true });
   }
-  update(item: Item<any>) {
+  update(item: UpdateDocType<IProduct>) {
     this.common.createOrUpdateAlertForm<any>(this.title, { name: 'text' }, undefined, item);
   }
 
   updateSearchValue(event: Event) {
     const target = event.target as HTMLIonSearchbarElement;
     const value = target.value as string;
-    this.queryOptions.update(o => ({ ...o, search: { ...o.search!, value } }));
+
   }
   updateFilterValue(event: Event, field: any) {
     const target = event.target as HTMLIonSelectElement;
     const value = target.value;
     let updatedValue = value;
-    this.queryOptions.update(o => ({ ...o, filters: { ...o.filters!, [field]: updatedValue } }));
+
   }
 
   setOrderField(event: Event) {
     const target = event.target as HTMLIonSearchbarElement;
     const value = target.value as string;
-    this.queryOptions.update(o => ({ ...o, ordering: { ...o.ordering!, field: value } }));
+
   }
   toggoleDirection() {
-    this.queryOptions.update(o => ({ ...o, ordering: { ...o.ordering!, direction: o.ordering!.direction === 'asc' ? 'desc' : 'asc' } }));
   }
 }

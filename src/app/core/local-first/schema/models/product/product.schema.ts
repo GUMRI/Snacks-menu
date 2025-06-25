@@ -12,7 +12,7 @@ export enum ProductCategory {
 }
 
 // ✅ Interface
-export interface Product {
+export interface IProduct {
     name: string;
     price: number;
     category: ProductCategory;
@@ -23,10 +23,10 @@ export interface Product {
 }
 
 // ✅ Type with BaseDoc
-export type ProductWithBaseDoc = Product & BaseDoc;
+export type ProductWithBaseDoc = IProduct & BaseDoc;
 
 // ✅ Schema
-export const PRODUCT_SCHEMA_LITERAL = generateRxSchema<Product>('products', {
+export const PRODUCT_SCHEMA_LITERAL = generateRxSchema<IProduct>('products', {
     name: { type: 'string', maxLength: 100 },
     price: { type: 'number' },
     category: {

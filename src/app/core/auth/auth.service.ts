@@ -2,7 +2,6 @@ import { Injectable, inject, signal, computed, resource } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { TranslocoService } from '@jsverse/transloco';
 import { CommonService } from '../../common/services/common.service';
-import { IUser } from '../../common/models/user.model';
 
 import { UserService } from './user.service';
 
@@ -29,7 +28,7 @@ export class AuthService {
   async logOut() {
 
 
-    await this.userService.updatUser(this.currentUser.value() as IUser, { isConnect: false, isActive: false })
+    await this.userService.updatUser(this.currentUser.value() as any, { isConnect: false, isActive: false })
     await this.currentUser.set(null);
     await this.currentId.set(null);
     await localStorage.removeItem('uid');
@@ -117,7 +116,7 @@ export class AuthService {
               if (newUserId) {
                 this.currentId.set(newUserId);
                 localStorage.setItem('uid', newUserId);
-                this.currentUser.set(newUser)
+                this.currentUser.set(newUser as any)
               }
             }
           }

@@ -4,17 +4,17 @@
     <ion-searchbar (ionInput)="updateSearchValue($event)" placeholder="Search"></ion-searchbar>
     <ion-buttons slot="end">
 
-      <ion-button (click)="toggoleDirection()">
+      <!-- <ion-button (click)="toggoleDirection()">
         <ion-icon
           [name]="queryOptions().ordering?.direction === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
-      </ion-button>
+      </ion-button> -->
 
     </ion-buttons>
   </ion-toolbar>
 
   <ion-list>
     <ion-accordion-group>
-      @for (addOn of addOnsList(); track addOn) {
+      @for (addOn of ps.addOns.value(); track addOn.id) {
       <ion-accordion value="{{ addOn.id }}">
         <ion-item slot="header">
           <ion-label>

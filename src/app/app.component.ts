@@ -3,7 +3,6 @@ import { RouterOutlet } from '@angular/router';
 import { addIcons } from 'ionicons';
 import * as icons from 'ionicons/icons';
 import {  doc, Firestore, updateDoc } from '@angular/fire/firestore';
-import { ImageReplicationService } from './common/services/image-sync.service';
 
 @Component({
   selector: 'app-root',

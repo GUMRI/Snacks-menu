@@ -26,10 +26,10 @@
                         <ion-select-option value="createdAt">{{ 'common.createdAt' | transloco }}
                         </ion-select-option>
                   </ion-select>
-                  <ion-button (click)="toggoleDirection()">
+                  <!-- <ion-button (click)="toggoleDirection()">
                         <ion-icon
                               [name]="queryOptions().ordering?.direction === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
-                  </ion-button>
+                  </ion-button> -->
 
             </ion-buttons>
       </ion-toolbar>
@@ -51,7 +51,7 @@
       </ion-toolbar>
       <ion-list>
             <ion-accordion-group>
-                  @for (user of list(); track user.id) {
+                  @for (user of list.value(); track user.id) {
                   <ion-accordion [value]="user.name">
                         <ion-item slot="header">
                               <ion-avatar slot="start">
@@ -87,7 +87,7 @@
 
                                     <ion-item>
                                           <ion-label> {{ 'common.createdAt' | transloco}} </ion-label>
-                                          <ion-badge color="ligth">{{ user.createdAt | date }}</ion-badge>
+                                          <!-- <ion-badge color="ligth">{{ user.createdAt | date }}</ion-badge> -->
                                     </ion-item>
                                     <ion-item>
                                           <ion-label> {{ 'common.createdBy' | transloco}} </ion-label>
@@ -96,8 +96,8 @@
                                                       <img alt="Silhouette of a person's head"
                                                             src="https://ionicframework.com/docs/img/demos/avatar.svg" />
                                                 </ion-avatar>
-                                                <ion-label> {{ $any(user.createdBy)?.name }}
-                                                </ion-label>
+                                                <!-- <ion-label> {{ $any(user.createdBy)?.name }} -->
+                                                <!-- </ion-label> -->
                                           </ion-chip>
                                     </ion-item>
                               </ion-list>
@@ -112,7 +112,7 @@
                                                             <ion-label  >  {{ 'common.updatedAt' | transloco}}</ion-label>
                                                             <ion-label slot="end">  {{ 'common.updatedBy' | transloco}}</ion-label>
                                                       </ion-item>
-                                                      @for (update of user.updates; track $index) {
+                                                      @for (update of user.logs; track $index) {
                                                       <ion-accordion style="border: 1px solid #ccc;">
                                                             <ion-item slot="header">
                                                                  
@@ -142,7 +142,7 @@
                                                                                           name="refresh-outline"></ion-icon>
                                                                               </ion-button>
                                                                         </ion-item>
-                                                                        @for (entry of toEntries(update.updating); track
+                                                                        @for (entry of toEntries(update.updateObj); track
                                                                         $index) {
                                                                         <ion-item>
                                                                               <ion-label> {{ "users.model." + entry[0] |

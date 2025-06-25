@@ -3,7 +3,7 @@ import { BaseDoc, TCollection, TDocument } from "../../../types/doc.models";
 import { generateRxSchema } from "../../../services/schema-generator.service";
 
 
-export interface User {
+export interface IUser {
     name: string;
     phone: string;
     isActive: boolean
@@ -13,10 +13,10 @@ export interface User {
 
 
 
-export type UserWithBaseDoc = User & BaseDoc;
+export type UserWithBaseDoc = IUser & BaseDoc;
 
 // ✅ Schema
-export const USER_SCHEMA_LITERAL = generateRxSchema<User>('Users', {
+export const USER_SCHEMA_LITERAL = generateRxSchema<IUser>('Users', {
     name: { type: 'string', maxLength: 100 },
     phone: { type: 'string', maxLength: 100 },
     isActive: { type: 'boolean' },

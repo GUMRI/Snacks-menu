@@ -2,13 +2,15 @@ import { inject, Injectable, Inject, Type, InjectionToken, Injector, Self, linke
 import { AlertController, AlertInput, ModalController, ToastController } from '@ionic/angular/standalone';
 import { translateObjectSignal, translateSignal, TranslocoService } from '@jsverse/transloco';
 
-import { AlertField, Filters, QueryOptions } from '../models/common.models';
-import { COLLECTIONS_NAMES, DatabaseService } from '../../core/local-first/services/db.service';
+import { DatabaseService } from '../../core/local-first/services/db.service';
 import { RxDocument } from 'rxdb';
+import { COLLECTIONS_NAMES } from '../../core/local-first/schema/collectionSettings';
+import { BaseDoc, UpdateDocType } from '../../core/local-first/types/doc.models';
 
 
-
-
+type AlertFields<T> = {
+  [K in keyof T]: AlertInput['type'] | 'text' | 'number' | 'date' | 'time' | 'checkbox' | 'radio' | 'select';
+}
 
 @Injectable({ providedIn: 'root' })
 export class CommonService {
@@ -21,13 +23,9 @@ export class CommonService {
 
   private dbService = inject(DatabaseService)
 
-
-
-
-
-  async createOrUpdateAlertForm<T>(collectionName: COLLECTIONS_NAMES, fields: AlertField<T>,
+  async createOrUpdateAlertForm<T>(collectionName: COLLECTIONS_NAMES, fields: AlertFields<Partial<T>>,
     defaultValue?: Partial<T>,
-    updatedValue?: (Partial<T> & { id: string })
+    updatedValue?: UpdateDocType<T>
   ) {
     const alert = await this.alert.create({
       header: this.transloco.translate(`${collectionName}.add`),
@@ -44,7 +42,14 @@ export class CommonService {
         {
           text: this.transloco.translate('common.save'),
           handler: async (data) => {
+            // check by fields if the data has number values and convert them 
+            Object.keys(data).forEach(key => {
+              if (fields[key as keyof typeof fields] === 'number') {
+                data[key] = Number(data[key]);
+              }
+            });
             if (updatedValue) {
+
               await this.dbService.update<T>(collectionName, updatedValue.id, data);
               this.showToast(this.transloco.translate(`${collectionName}.updated`));
             } else {
@@ -106,7 +111,7 @@ export class CommonService {
 
     }
   }
- 
+
   async toastMsg(message: string, type: 'error' | 'success' | 'warning') {
     let color = '';
     let icon = '';

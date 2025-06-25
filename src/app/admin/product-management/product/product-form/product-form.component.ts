@@ -9,12 +9,14 @@ import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonInput, IonSelect, IonSelectOption, IonButton, IonButtons, IonCheckbox, IonIcon, IonChip,
   ModalController
 } from '@ionic/angular/standalone';
-import { IProduct, ProductCategory, IAddOn } from '../../../../common/models/product.model';
 import { CommonService } from '../../../../common/services/common.service';
-import { Observable } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { map, Observable } from 'rxjs';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ImgComponent } from '../../../../common/components/img.component';
+import { DatabaseService } from '../../../../core/local-first/services/db.service';
+import { ProductService } from '../../../../core/services/product.service';
+import { AddOnWithBaseDoc, IAddOn } from '../../../../core/local-first/schema/models/product/add-on.schema';
 
 @Component({
   selector: 'app-product-form',
@@ -54,28 +56,22 @@ export class ProductFormComponent implements OnInit {
   img = signal('1747345780727.png')
   modalCtrl = inject(ModalController);
   commonService = inject(CommonService);
+  productService = inject(ProductService);
 
-
+  productCategoryList = computed(() => this.productService.categories.value().map(c => c.name));
   productForm = new FormGroup({
     name: new FormControl('', Validators.required),
     price: new FormControl(0, [Validators.required, Validators.min(0)]),
-    category: new FormControl(ProductCategory.Snack, Validators.required),
+    category: new FormControl(this.productCategoryList()[0], Validators.required),
     imageUrl: new FormControl(placeholder),
     isAvailable: new FormControl(true),
     addOnSearch: new FormControl(''),
     file: new FormControl<File | null>(null),
     addOns: new FormControl<any>([])
   });
-  productCategories = Object.values(ProductCategory);
   addOnSearch = toSignal((this.productForm.get('addOnSearch')?.valueChanges) as Observable<string>, { initialValue: '' });
+  addOnsList = this.productService.addOns
 
-  addOnsList: Signal<IAddOn[]> = toSignal(this.commonService.getListData<IAddOn>('addOns') as Observable<IAddOn[]>, { initialValue: [] });
-
-  filteredAddOns = computed(() => {
-    return this.addOnsList()
-      .filter(addOn => addOn.name.toLowerCase().includes(
-        (this.addOnSearch() as string).toLowerCase()))
-  })
 
   selectedFile: File | null = null;
   imagePreviewUrl: string | ArrayBuffer | null = null;
@@ -98,7 +94,7 @@ export class ProductFormComponent implements OnInit {
   }
 
   onAddAddOn(name: string) {
-    const addOn = this.addOnsList().find(addOn => addOn.name === name);
+    const addOn = this.addOnsList.value().find(addOn => addOn.name === name);
     if (!addOn) return;
     const currentAddOns = this.productForm.get('addOns')?.value;
     if (!currentAddOns.find((a: any) => a.id === addOn.id)) {
@@ -108,8 +104,8 @@ export class ProductFormComponent implements OnInit {
 
   }
 
-  onRemoveAddOn(addOn: IAddOn) {
-    const currentAddOns = this.productForm.get('addOns')?.value as IAddOn[];
+  onRemoveAddOn(addOn: AddOnWithBaseDoc) {
+    const currentAddOns = this.productForm.get('addOns')?.value as AddOnWithBaseDoc[];
     this.productForm.get('addOns')?.setValue(currentAddOns.filter(a => a.id !== addOn.id));
   }
 

@@ -5,7 +5,7 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./admin/admin.component').then(m => m.AdminComponent),
-    // children:[...adminRoutes]
+    children:[...adminRoutes]
   }
 ];
 

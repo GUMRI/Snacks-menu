@@ -3,16 +3,16 @@
     <ion-searchbar (ionInput)="updateSearchValue($event)" placeholder="Search"></ion-searchbar>
     <ion-buttons slot="end">
 
-      <ion-button (click)="toggoleDirection()">
+      <!-- <ion-button (click)="toggoleDirection()">
         <ion-icon
           [name]="queryOptions().ordering?.direction === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
-      </ion-button>
+      </ion-button> -->
 
     </ion-buttons>
   </ion-toolbar>
  
     <ion-accordion-group>
-      @for (ingredient of ingredientsList(); track ingredient.id) {
+      @for (ingredient of ingredientsList.value(); track ingredient.id) {
       <ion-accordion>
         <ion-item slot="header">
           <ion-label>

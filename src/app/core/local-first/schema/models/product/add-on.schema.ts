@@ -3,17 +3,17 @@ import { BaseDoc, TCollection, TDocument } from '../../../types/doc.models';
 import { generateRxSchema } from '../../../services/schema-generator.service';
 
 // ✅ Interface
-export interface AddOn {
+export interface IAddOn {
   name: string;
   price: number;
   qty?: number;
 }
 
 // ✅ Type with BaseDoc
-export type AddOnWithBaseDoc = AddOn & BaseDoc;
+export type AddOnWithBaseDoc = IAddOn & BaseDoc;
 
 // ✅ Schema
-export const ADDON_SCHEMA_LITERAL = generateRxSchema<AddOn>('add_ons', {
+export const ADDON_SCHEMA_LITERAL = generateRxSchema<IAddOn>('add_ons', {
   name: { type: 'string', maxLength: 100 },
   price: { type: 'number' },
   qty: { type: 'number' }

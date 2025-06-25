@@ -11,6 +11,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { initDatabase } from './core/local-first/services/db.service';
+import { environment } from '../environments/environment.development';
 
 
 export const appConfig: ApplicationConfig = {
@@ -52,17 +53,7 @@ export const appConfig: ApplicationConfig = {
       },
       loader: TranslocoHttpLoader
     }),
-    provideFirebaseApp(() => initializeApp({
-
-      apiKey: "AIzaSyDJQzTUBzQrHmYC6ityy-dSavxQHqHtgWw",
-      authDomain: "pro-max-aad84.firebaseapp.com",
-      projectId: "pro-max-aad84",
-      storageBucket: "pro-max-aad84.appspot.com",
-      messagingSenderId: "611180821912",
-      appId: "1:611180821912:web:5bbb0e2121feb58f44ffed",
-      measurementId: "G-6EDS59FTQB"
-
-    })),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage())]
 };

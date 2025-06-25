@@ -5,23 +5,22 @@
     <ion-searchbar (ionInput)="updateSearchValue($event)" placeholder="Search"></ion-searchbar>
     <ion-buttons slot="end">
       
-      <ion-button (click)="toggoleDirection()">
+      <!-- <ion-button (click)="toggoleDirection()">
         <ion-icon
-          [name]="queryOptions().ordering?.direction === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
-      </ion-button>
+          [name]="query().sort === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
+      </ion-button> -->
 
     </ion-buttons>
   </ion-toolbar>
 
 
-  @if (productsList().length > 0) {
+  @if (productService.products.hasValue()) {
   <ion-accordion-group>
-    @for (item of productsList(); track item.id) {
+    @for (item of productService.products.value(); track item.id) {
     <ion-accordion>
       <ion-item slot="header">
         <ion-label>
           <h2>{{item.name}}</h2>
-          <p>{{item.createdAt | date}}</p>
         </ion-label>
         <ion-button color="warning" (click)="update(item);  $event.stopPropagation()">
           <ion-icon slot="icon-only" name="create-outline"></ion-icon>

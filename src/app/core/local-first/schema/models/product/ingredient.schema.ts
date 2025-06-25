@@ -12,18 +12,18 @@ export enum IngredientQuantityLevel {
 }
 
 // ✅ Interface
-export interface Ingredient {
+export interface IIngredient {
   name: string;
-  quantityLevel: IngredientQuantityLevel;
+  quantityLevel?: IngredientQuantityLevel;
 }
 
 // ✅ Type with BaseDoc
-export type IngredientWithBaseDoc = Ingredient & BaseDoc;
+export type IngredientWithBaseDoc = IIngredient & BaseDoc;
 
 // ✅ Schema
-export const INGREDIENT_SCHEMA_LITERAL = generateRxSchema<Ingredient>('ingredients', {
+export const INGREDIENT_SCHEMA_LITERAL = generateRxSchema<IIngredient>('ingredients', {
   name: { type: 'string', maxLength: 100 },
-  quantityLevel: { type: 'string', enum: Object.values(IngredientQuantityLevel) }
+  quantityLevel: { type: 'string', enum: Object.values(IngredientQuantityLevel), default: IngredientQuantityLevel.Normal }
 });
 
 export const INGREDIENT_SCHEMA: RxJsonSchema<IngredientWithBaseDoc> = INGREDIENT_SCHEMA_LITERAL;

@@ -1,12 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-
-import { IUser } from '../../common/models/user.model';
-import { BaseItem, itemWithID } from '../../common/models/common.models';
 import {
   addDoc, collection, doc, Firestore,
   getDoc, getDocs, limit, query,
   updateDoc, where
 } from '@angular/fire/firestore';
+import { IUser } from '../local-first/schema/models/user/user.scehma';
+import { UpdateDocType } from '../local-first/types/doc.models';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +21,7 @@ export class UserService {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      return { ...docSnap.data(), id: docSnap.id } as IUser;
+      return { ...docSnap.data(), id: docSnap.id };
 
     } else {
       // docSnap.data() will be undefined in this case
@@ -42,7 +41,7 @@ export class UserService {
 
     const doc = querySnapshot.docs[0];
 
-    return { id: doc.id, ...doc.data() } as IUser;
+    return { id: doc.id, ...doc.data() };
 
   }
 
@@ -70,7 +69,7 @@ export class UserService {
     return { ...finalData, id: docRef.id } as IUser;
   }
 
-  async updatUser(user: itemWithID<IUser>, data: Partial<IUser>): Promise<IUser> {
+  async updatUser(user: UpdateDocType<IUser>, data: Partial<IUser>) {
    
     const docRef = doc(this.firestore, 'users', user.id);
 

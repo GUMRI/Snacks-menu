@@ -1,4 +1,4 @@
-<!-- <ion-header>
+<ion-header>
   <ion-toolbar>
     <ion-title>Product Management</ion-title>
   
@@ -18,38 +18,37 @@
           name="add-circle-outline"></ion-icon></ion-fab-button>
       <ion-fab-button (click)="addIngredient()" color="tertiary"><ion-icon
           name="list-outline"></ion-icon></ion-fab-button>
-      <!-- add category button -->
-      <ion-fab-button (click)="addCategory()" color="tertiary"><ion-icon
-          name="folder-outline"></ion-icon></ion-fab-button>
+   add category button
+<ion-fab-button (click)="addCategory()" color="tertiary"><ion-icon name="folder-outline"></ion-icon></ion-fab-button>
 
-    </ion-fab-list>
-  </ion-fab>
-  <ion-segment [value]="selectedSegment" (ionChange)="segmentChanged($event)">
-    <ion-segment-button value="products" content-id="products">
-      <ion-label>Products</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="addons" content-id="addons"> 
-      <ion-label>Add-Ons</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="ingredients" content-id="ingredients">
-      <ion-label>Ingredients</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-
+</ion-fab-list>
+</ion-fab>
+<ion-segment [value]="selectedSegment" (ionChange)="segmentChanged($event)">
+  <ion-segment-button value="products" content-id="products">
+    <ion-label>Products</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="addons" content-id="addons">
+    <ion-label>Add-Ons</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="ingredients" content-id="ingredients">
+    <ion-label>Ingredients</ion-label>
+  </ion-segment-button>
+</ion-segment>
 
 
-  <ion-segment-view>
-    <ion-segment-content id="products">
-       <app-product />
-    </ion-segment-content>
-    <ion-segment-content id="addons">
-      <app-add-on />
-    </ion-segment-content>
-    <ion-segment-content id="ingredients">
-      <app-ingredient />
-    </ion-segment-content>
-  </ion-segment-view>
+
+<ion-segment-view>
+  <ion-segment-content id="products">
+    <app-product />
+  </ion-segment-content>
+  <ion-segment-content id="addons">
+    <app-add-on />
+  </ion-segment-content>
+  <ion-segment-content id="ingredients">
+    <app-ingredient />
+  </ion-segment-content>
+</ion-segment-view>
 
 
-  
-</ion-content> -->
+
+</ion-content> 

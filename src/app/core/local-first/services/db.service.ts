@@ -1,11 +1,12 @@
 import {
+  inject,
   Injectable,
   isDevMode,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 // import typings
-import {  TRxDatabase } from './../RxDB.d';
+import { TRxDatabase } from './../RxDB.d';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { wrappedKeyEncryptionCryptoJsStorage } from 'rxdb/plugins/encryption-crypto-js';
 import { wrappedKeyCompressionStorage } from 'rxdb/plugins/key-compression';
@@ -26,8 +27,11 @@ import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
 import { BaseDoc, TCollection } from '../types/doc.models';
 import { wrappedValidateZSchemaStorage } from 'rxdb/plugins/validate-z-schema';
-import {  COLLECTIONS_NAMES, collectionSettings, TCollections } from '../schema/collectionSettings';
-
+import { COLLECTIONS_NAMES, collectionSettings, TCollections } from '../schema/collectionSettings';
+import { startReplication } from '../replication/start-replication';
+import { Firestore } from '@angular/fire/firestore';
+import { RxDBAttachmentsPlugin } from 'rxdb/plugins/attachments';
+addRxPlugin(RxDBAttachmentsPlugin);
 addRxPlugin(RxDBLeaderElectionPlugin);
 addRxPlugin(RxDBUpdatePlugin);
 addRxPlugin(RxDBQueryBuilderPlugin);
@@ -102,10 +106,13 @@ export async function initDatabase() {
 
 @Injectable({ providedIn: 'root' })
 export class DatabaseService {
+  firestore = inject(Firestore)
   get db(): RxDatabase<TCollections> {
     return DB_INSTANCE;
   }
-
+  constructor () {
+    startReplication(this.firestore, this.db);
+  }
   getCollectionNames(): (COLLECTIONS_NAMES)[] {
     return Object.keys(
       this.db.collections
@@ -203,20 +210,21 @@ export class DatabaseService {
 
     const updatedDoc: UpdateQuery<T & BaseDoc> = {
       $push: {
-        ...{
-          logs: {
-            type: 'delete',
-            at: new Date().toISOString(),
-            by: localStorage.getItem('user') || '',
-            before: JSON.stringify(rest),
-            updateObj: 'null',
-          },
+        logs: {
+          type: 'delete',
+          at: new Date().toISOString(),
+          by: localStorage.getItem('user') || '',
+          before: JSON.stringify(rest),
+          updateObj: 'null',
         },
       },
     };
 
-    await doc.update(updatedDoc);
-    return doc.remove();
+     await doc.update(updatedDoc);
+     setTimeout(() => { 
+       doc.remove();
+     }, 0);
+    
   }
   async findOne<T>(
     collectionName: COLLECTIONS_NAMES,

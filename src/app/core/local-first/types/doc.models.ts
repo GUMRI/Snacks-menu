@@ -22,6 +22,8 @@ export interface BaseDoc {
 
 export type TDocument<T> = RxDocument<T & BaseDoc>
 
+export type UpdateDocType<T> = Partial<T & BaseDoc> & { id: string; }
+
 export type TCollection<T> = RxCollection<T & BaseDoc>
 
 

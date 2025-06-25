@@ -57,6 +57,9 @@ export function generateRxSchema<T>(
       ...properties,
       ...mainProperties,
     },
+     attachments: {
+        encrypted: true // if true, the attachment-data will be encrypted with the db-password
+    },
     required: ['id'],
   };
 
